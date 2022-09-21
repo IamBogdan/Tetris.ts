@@ -1,0 +1,17 @@
+@font-face {
+  font-family: 'monogram';
+  src: url('fonts/monogram/monogram-extended.ttf') format('truetype');
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: black;
+}
+
+/*
+canvas {
+  display:block;
+}
+*/
