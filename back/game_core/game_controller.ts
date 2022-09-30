@@ -77,10 +77,7 @@ class GameController
     playerData.passNextAutomaticDown = direction === DOWN;
     playerData.game.moveTetromino(direction);
   
-    playerData.moveBlock = true;
-    setTimeout(() => {
-      playerData.moveBlock = false;
-    }, 40);
+    this.blockMovement(id);
   }
   
   rotateTetrominoWallkick(id: string, direction: number)
@@ -92,6 +89,26 @@ class GameController
     }
 
     playerData.game.rotateTetrominoWallkick(direction);
+
+    this.blockMovement(id);
+  }
+
+  dropHard(id: string)
+  {
+    const playerData = this.playerDictionary[id];
+    
+    if (playerData.moveBlock) {
+      return;
+    }
+
+    playerData.game.dropHard();
+
+    this.blockMovement(id);
+  }
+
+  blockMovement(id: string)
+  {
+    const playerData = this.playerDictionary[id];
 
     playerData.moveBlock = true;
     setTimeout(() => {

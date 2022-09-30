@@ -48,7 +48,7 @@ const initSocket = (app, grid, stats) => {
 
   const keyState = {};    
   window.addEventListener('keydown', (event) => {
-    if (event.repeat && (event.code === 'KeyQ' || event.code === 'KeyE'))
+    if (event.repeat && (event.code === 'KeyQ' || event.code === 'KeyE' || event.code === 'Space'))
       return;
     keyState[event.code] = true;
   });
@@ -58,25 +58,29 @@ const initSocket = (app, grid, stats) => {
   });
 
   function controlLoop() {
-      if (keyState['KeyA']) {
-        socket.emit('moveTetromino', LEFT);
-      }
-      else if (keyState['KeyD']) {
-        socket.emit('moveTetromino', RIGHT);
-      }
-      else if (keyState['KeyS']) {
-        socket.emit('moveTetromino', DOWN);
-      }
-      else if (keyState['KeyQ']) {
-        socket.emit('rotateTetromino', LEFT);
-        keyState['KeyQ'] = false;
-      }
-      else if (keyState['KeyE']) {
-        socket.emit('rotateTetromino', RIGHT);
-        keyState['KeyE'] = false;
-      }
-
-      setTimeout(controlLoop, 70);
+    if (keyState['KeyA']) {
+      socket.emit('moveTetromino', LEFT);
+    }
+    else if (keyState['KeyD']) {
+      socket.emit('moveTetromino', RIGHT);
+    }
+    else if (keyState['KeyS']) {
+      socket.emit('moveTetromino', DOWN);
+    }
+    else if (keyState['KeyQ']) {
+      socket.emit('rotateTetromino', LEFT);
+      keyState['KeyQ'] = false;
+    }
+    else if (keyState['KeyE']) {
+      socket.emit('rotateTetromino', RIGHT);
+      keyState['KeyE'] = false;
+    }
+    else if (keyState['Space']) {
+      socket.emit('dropHard');
+      keyState['Space'] = false;
+    }
+    
+    setTimeout(controlLoop, 70);
   } 
   controlLoop();
 

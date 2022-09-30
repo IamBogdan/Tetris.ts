@@ -111,6 +111,26 @@ class Game
   }
 
   /**
+   * Performs a hard drop
+   * @memberof Game
+   */
+  dropHard()
+  {
+    if (this.isLost || !this.currentTetromino) {
+      return;
+    }
+
+    this.clearTetrominoOnPlayfield();
+
+    while(this.allowNextPosition(0, 1)) {
+      this.currentTetromino.y += 1;
+    }
+
+    this.moveTetromino(DOWN);
+    // while (!this.moveTetromino(DOWN)) {}
+  }
+
+  /**
    * Checks the "vanish zone". Sets isLost to true if there is a block of the tetromino in the "vanish zone"
    * @returns if the game is lost or not (isLost)
    * @memberof Game
@@ -193,7 +213,7 @@ class Game
    */
   rotateTetrominoWallkick(direction: number)
   {
-    if (this.isLost || !this.currentTetromino) { 
+    if (this.isLost || !this.currentTetromino) {
       console.log('Game::rotateTetrominoWallkick');
       return;
     }

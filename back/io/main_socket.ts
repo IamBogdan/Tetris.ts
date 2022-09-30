@@ -61,7 +61,7 @@ function listenIO(io: Server)
         // start game
         if (!userData.room.isStarted) {
           userData.room.isStarted = true; // changes for another sockets
-          userData.room.gameController!.startGame(io);
+          userData.room.gameController.startGame(io);
         }
        }
     }
@@ -70,7 +70,7 @@ function listenIO(io: Server)
       if (!playerData.isPlaying || !playerData.room || !playerData.room.isStarted) {
         return;
       }
-      const controller = playerData.room.gameController!;
+      const controller = playerData.room.gameController;
 
       controller.moveTetromino(socket.id, direction);
 
@@ -86,11 +86,26 @@ function listenIO(io: Server)
       });
     });
 
+    socket.on('dropHard', () => {
+      if (!playerData.isPlaying || !playerData.room || !playerData.room.isStarted) {
+        return;
+      }
+      const controller = playerData.room.gameController;
+
+      controller.dropHard(socket.id);
+
+      playerData.room.playersData.forEach((player) => {
+        const playfields = controller.getPlayfields(player.socketId);
+
+        io.to(player.socketId).emit('returnPlayfields', playfields);
+      });
+    });
+
     socket.on('rotateTetromino', (direction: number) => {
       if (!playerData.isPlaying || !playerData.room || !playerData.room.isStarted) {
         return;
       }
-      const controller = playerData.room.gameController!;
+      const controller = playerData.room.gameController;
 
       controller.rotateTetrominoWallkick(socket.id, direction);
       
